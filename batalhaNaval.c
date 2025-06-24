@@ -15,7 +15,7 @@ void imprimir_tabuleiro() {
         for (int j = 0; j < TAMANHO_COLUNA; j++) {
             printf("%d\t", tabuleiro[i][j]);
         }
-        printf("\n");
+        printf("\n\n");
     }
 }
 
@@ -55,7 +55,7 @@ void generateNavio(struct navio* navio,int pos_inic_x,int pos_inic_y,int pos_fim
 int posicao_navio_valida(struct navio* navio) {
     int posicao_valida = 1;
     while (navio != NULL) {
-        if (tabuleiro[navio->pos_y][navio->pos_x]==3) {
+        if (navio->pos_x > 9 || navio->pos_y > 9 || (tabuleiro[navio->pos_y][navio->pos_x]==3)) {
             posicao_valida = 0;
             break;
         }
@@ -71,15 +71,22 @@ void inserir_navio(struct navio* navio) {
         }
     }
 }
+
+void generate_and_insert_navio(int pos_inic_x,int pos_inic_y,int pos_fim_x, int pos_fim_y) {
+    struct navio navio;
+    generateNavio(&navio,pos_inic_x,pos_inic_y,pos_fim_x,pos_fim_y);
+    inserir_navio(&navio);
+}
 int main(void) {
     inicializar_tabuleiro();
-    struct navio navio;
-    generateNavio(&navio,0,0,2,2);
-    inserir_navio(&navio);
-    generateNavio(&navio,4,3,4,5);
-    inserir_navio(&navio);
-    imprimir_tabuleiro();
 
+    generate_and_insert_navio(0,0,2,0);
+    generate_and_insert_navio(4,3,4,5);
+    generate_and_insert_navio(1,1,3,3);
+    generate_and_insert_navio(9,9,7,7);
+
+    imprimir_tabuleiro();
+    system("pause");
 
     return 0;
 }
